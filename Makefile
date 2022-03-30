@@ -1,12 +1,25 @@
 build:
-	docker build . -t sandbox --no-cache
+	docker build . -t sangheon/sandbox --no-cache
 
-run:
-	docker run -it --rm --name sandbox sandbox:latest
+push:
+	docker push sangheon/sandbox
+
+clean:
+	-docker-compose down --rmi all
+	-docker rm sangheon/sandbox
+	-docker rmi sangheon/sandbox:latest
 
 shell:
 	docker exec -it sandbox /bin/zsh
 
-clean:
-	-docker rm sandbox
-	-docker rmi sandbox:latest
+start:
+	docker run -itd --rm --name sandbox sangheon/sandbox:latest
+
+stop:
+	docker stop sandbox
+
+up:
+	docker-compose up -d
+
+down:
+	docker-compose down --rmi all

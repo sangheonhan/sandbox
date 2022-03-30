@@ -1,7 +1,8 @@
-version: '3.4'
+version: "3"
 services:
   sandbox:
-    image: sandbox
+    image: sangheon/sandbox
+    container_name: sandbox
     volumes:
       - "/Users/sangheon/:/sandbox/"
     ports:
