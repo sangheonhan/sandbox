@@ -1,10 +1,11 @@
-version: "3"
+version: '3'
 services:
   sandbox:
     image: sangheon/sandbox
     container_name: sandbox
+    working_dir: /sandbox/
     volumes:
-      - "/Users/sangheon/:/sandbox/"
+      - .:/sandbox/
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
