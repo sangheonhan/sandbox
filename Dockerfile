@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV TERM=xterm-256color
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,7 +7,7 @@ ENV LANG=ko_KR.UTF-8
 ENV LC_MESSAGES=POSIX
 
 RUN apt update -y && \
-apt install -y curl wget ack locales language-pack-ko tzdata zsh vim tmux git \
+apt install -y curl wget ack locales language-pack-ko tzdata zsh vim neovim tmux git \
 rsync exuberant-ctags black python3-venv && \
 echo "Asia/Seoul" > /etc/timezone; \
 ln -fs /usr/share/zoneinfo/`cat /etc/timezone` /etc/localtime && \
