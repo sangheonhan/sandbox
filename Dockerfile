@@ -23,6 +23,6 @@ echo "export LC_MESSAGES=POSIX" >> ~/.extra; \
 chsh -s /bin/zsh root && \
 apt clean autoclean -y && \
 apt autoremove -y && \ 
-rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/dpkg/ /var/lib/cache/ /var/lib/log/
+rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/cache/ /var/lib/log/
 
 CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
