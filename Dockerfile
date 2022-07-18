@@ -6,6 +6,8 @@ ENV DEBCONF_NONINTERACTIVE_SEEN=true
 ENV LANG=ko_KR.UTF-8
 ENV LC_MESSAGES=POSIX
 
+WORKDIR /sandbox/
+
 RUN apt update -y && \
 apt install -y curl wget ack locales language-pack-ko tzdata zsh vim neovim tmux git \
 rsync exuberant-ctags black python3-venv && \
@@ -21,6 +23,6 @@ echo "export LC_MESSAGES=POSIX" >> ~/.extra; \
 chsh -s /bin/zsh root && \
 apt clean autoclean -y && \
 apt autoremove -y && \ 
-rm -rf /var/lib/{apt,dpkg,cache,log}/ ~/dotfiles/
+rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/dpkg/ /var/lib/cache/ /var/lib/log/
 
 CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
