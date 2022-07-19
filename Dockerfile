@@ -8,7 +8,8 @@ ENV LC_MESSAGES=POSIX
 
 WORKDIR /sandbox/
 
-RUN apt update -y && \
+RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
+apt update -y && \
 apt install -y curl wget ack locales language-pack-ko tzdata zsh vim neovim tmux git \
 rsync exuberant-ctags black python3-venv && \
 echo "Asia/Seoul" > /etc/timezone; \
