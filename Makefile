@@ -3,7 +3,7 @@ include .env
 DOCKLE_LATEST=`(curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')`
 
 build:
-	docker build . -t sangheon/sandbox:$(VERSION) --no-cache
+	DOCKER_BUILDKIT=1 docker build . -t sangheon/sandbox:$(VERSION) --no-cache
 
 push:
 	docker push sangheon/sandbox:$(VERSION)
