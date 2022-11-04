@@ -10,7 +10,7 @@ WORKDIR /sandbox/
 
 RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
 apt update -y && \
-apt install -y curl wget ack locales language-pack-ko tzdata zsh vim neovim tmux git \
+apt install -y curl wget ack locales language-pack-ko tzdata zsh vim tmux git \
 rsync exuberant-ctags black python3-venv && \
 echo "Asia/Seoul" > /etc/timezone; \
 ln -fs /usr/share/zoneinfo/`cat /etc/timezone` /etc/localtime && \
