@@ -6,6 +6,7 @@ build:
 	DOCKER_BUILDKIT=1 docker buildx build --push --platform linux/arm64/v8,linux/amd64 -t sangheon/sandbox:$(VERSION) --no-cache .
 
 init:
+	docker buildx rm multiarch-builder
 	docker buildx inspect --bootstrap
 	docker buildx create --name multiarch-builder --use
 	docker buildx use multiarch-builder
