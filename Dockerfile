@@ -8,10 +8,12 @@ ENV LC_MESSAGES=POSIX
 
 WORKDIR /sandbox/
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
 apt update -y && \
 apt install -y curl wget ack locales language-pack-ko tzdata zsh vim tmux git \
-rsync exuberant-ctags black python3-venv gpg && \
+rsync exuberant-ctags black python3-venv gpg sudo gosu && \
 echo "Asia/Seoul" > /etc/timezone; \
 ln -fs /usr/share/zoneinfo/`cat /etc/timezone` /etc/localtime && \
 git config --global pull.rebase false && \
@@ -24,6 +26,9 @@ echo "export LC_MESSAGES=POSIX" >> ~/.extra; \
 chsh -s /bin/zsh root && \
 apt clean autoclean -y && \
 apt autoremove -y && \ 
+chmod +x /usr/local/bin/entrypoint.sh && \
 rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/cache/ /var/lib/log/
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
