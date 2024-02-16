@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV TERM=xterm-256color
 ENV DEBIAN_FRONTEND=noninteractive
@@ -6,7 +6,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN=true
 ENV LANG=ko_KR.UTF-8
 ENV LC_MESSAGES=POSIX
 
-WORKDIR /sandbox/
+WORKDIR /app/
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
