@@ -1,5 +1,6 @@
 include .env
 
+USERNAME=app
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 
@@ -8,6 +9,9 @@ DOCKLE_LATEST=`(curl --silent "https://api.github.com/repos/goodwithtech/dockle/
 build:
 	DOCKER_BUILDKIT=1 docker buildx build --push --platform linux/arm64/v8,linux/amd64 -t sangheon/sandbox:$(VERSION) --no-cache .
 	$(MAKE) pull
+
+testbuild:
+	docker build -t sangheon/sandbox:$(VERSION)-build .
 
 init:
 	docker buildx rm multiarch-builder
@@ -27,13 +31,17 @@ clean:
 	-docker rmi sangheon/sandbox:$(VERSION)
 
 shell:
-	docker exec -it -u app sandbox_$(VERSION) /bin/zsh
+	docker exec -it -u $(USERNAME) sandbox_$(VERSION) /bin/zsh
 
 start:
 	docker run -itd --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) sangheon/sandbox:$(VERSION)
+	$(MAKE) log
 
 stop:
 	docker stop sandbox_$(VERSION)
+
+log:
+	docker logs -f sandbox_$(VERSION)
 
 sandbox:
 	docker run --interactive --tty --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) --volume "$(PWD)":/app/ sangheon/sandbox:$(VERSION) /bin/zsh
