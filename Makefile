@@ -13,6 +13,9 @@ build:
 testbuild:
 	docker build -t sangheon/sandbox:$(VERSION)-build .
 
+testrun:
+	docker run -it --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) sangheon/sandbox:$(VERSION)-build /bin/zsh
+
 init:
 	docker buildx rm multiarch-builder
 	docker buildx inspect --bootstrap
