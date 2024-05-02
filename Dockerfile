@@ -8,8 +8,6 @@ ENV LC_MESSAGES=POSIX
 
 WORKDIR /app/
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
 RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
 apt update -y && \
 apt install -y curl wget ack locales language-pack-ko tzdata zsh vim tmux git \
@@ -34,8 +32,11 @@ chmod 0440 /etc/sudoers.d/app && \
 sudo -u app bash -c "cd /home/app/ && git clone https://github.com/sangheonhan/dotfiles.git && cd ./dotfiles && ./bootstrap.sh -f && echo 'export LC_MESSAGES=POSIX' >> ~/.extra" && \
 apt clean autoclean -y && \
 apt autoremove -y && \ 
+echo '#! /bin/bash\n\nexec "$@"' > /usr/local/bin/entrypoint.sh && \
 chmod +x /usr/local/bin/entrypoint.sh && \
 rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/cache/ /var/lib/log/
+
+USER app
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
