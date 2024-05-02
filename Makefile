@@ -1,8 +1,6 @@
 include .env
 
 USERNAME=app
-USER_ID=$(shell id -u)
-GROUP_ID=$(shell id -g)
 
 DOCKLE_LATEST=`(curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')`
 
@@ -14,7 +12,7 @@ testbuild:
 	docker build -t sangheon/sandbox:$(VERSION)-build .
 
 testrun:
-	docker run -it --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) sangheon/sandbox:$(VERSION)-build /bin/zsh
+	docker run -it --rm --name sandbox_$(VERSION) sangheon/sandbox:$(VERSION)-build
 
 init:
 	docker buildx rm multiarch-builder
@@ -37,7 +35,7 @@ shell:
 	docker exec -it -u $(USERNAME) sandbox_$(VERSION) /bin/zsh
 
 start:
-	docker run -itd --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) sangheon/sandbox:$(VERSION)
+	docker run -itd --rm --name sandbox_$(VERSION) sangheon/sandbox:$(VERSION)
 	$(MAKE) log
 
 stop:
@@ -47,7 +45,7 @@ log:
 	docker logs -f sandbox_$(VERSION)
 
 sandbox:
-	docker run --interactive --tty --rm --name sandbox_$(VERSION) -e HOST_UID=$(USER_ID) -e HOST_GID=$(GROUP_ID) --volume "$(PWD)":/app/ sangheon/sandbox:$(VERSION) /bin/zsh
+	docker run --interactive --tty --rm --name sandbox_$(VERSION) --volume "$(PWD)":/app/ sangheon/sandbox:$(VERSION) /bin/zsh
 
 lint:
 	docker run --rm -v /var/run/docker.sock:/var/run/docker.sock goodwithtech/dockle:v${DOCKLE_LATEST} sangheon/sandbox:$(VERSION)
