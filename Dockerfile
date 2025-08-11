@@ -11,7 +11,7 @@ WORKDIR /app/
 RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
 apt update -y && \
 apt install -y curl wget ack locales language-pack-ko tzdata zsh vim tmux git \
-rsync exuberant-ctags black python3-venv gpg sudo gosu && \
+rsync exuberant-ctags black python3-venv sudo build-essential file tree psmisc jq cloc && \
 echo "Asia/Seoul" > /etc/timezone; \
 ln -fs /usr/share/zoneinfo/`cat /etc/timezone` /etc/localtime && \
 git config --global pull.rebase false && \
@@ -20,23 +20,23 @@ update-locale LANG=ko_KR.UTF-8 && \
 dpkg-reconfigure --frontend noninteractive locales && \
 echo "export LC_MESSAGES=POSIX" >> ~/.extra; \
 chsh -s /bin/zsh root && \
-usermod -l app ubuntu && \
-groupmod -n app ubuntu && \
-usermod -d /home/app -m app && \
-chown -R app:app /home/app && \
-passwd -d app && \
-usermod -c "Application" app && \
-chsh -s /bin/zsh app && \
-echo "app ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/app && \
-chmod 0440 /etc/sudoers.d/app && \
-sudo -u app bash -c "cd /home/app/ && git clone https://github.com/sangheonhan/dotfiles.git && cd ./dotfiles && ./bootstrap.sh -f && echo 'export LC_MESSAGES=POSIX' >> ~/.extra" && \
+usermod -l appuser ubuntu && \
+groupmod -n appgroup ubuntu && \
+usermod -d /home/appuser -m appuser && \
+chown -R appuser:appgroup /home/appuser && \
+passwd -d appuser && \
+usermod -c "Application" appuser && \
+chsh -s /bin/zsh appuser && \
+echo "appuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/appuser && \
+chmod 0440 /etc/sudoers.d/appuser && \
+sudo -u appuser bash -c "cd /home/appuser/ && git clone https://github.com/sangheonhan/dotfiles.git && cd ./dotfiles && ./bootstrap.sh -f && echo 'export LC_MESSAGES=POSIX' >> ~/.extra" && \
 apt clean autoclean -y && \
 apt autoremove -y && \ 
 echo '#! /bin/bash\n\nexec "$@"' > /usr/local/bin/entrypoint.sh && \
 chmod +x /usr/local/bin/entrypoint.sh && \
 rm -rf ~/dotfiles/ /var/lib/apt/lists /var/lib/apt/ /var/lib/cache/ /var/lib/log/
 
-USER app
+USER appuser
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
