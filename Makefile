@@ -5,7 +5,7 @@ USERNAME=app
 DOCKLE_LATEST=`(curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')`
 
 build:
-	DOCKER_BUILDKIT=1 docker buildx build --push --platform linux/arm64/v8,linux/amd64 -t sangheon/sandbox:$(VERSION) --no-cache .
+	DOCKER_BUILDKIT=1 docker buildx build --push --platform linux/arm64,linux/amd64 -t sangheon/sandbox:$(VERSION) --no-cache .
 	$(MAKE) pull
 
 testbuild:
@@ -15,10 +15,8 @@ testrun:
 	docker run -it --rm --name sandbox_$(VERSION) sangheon/sandbox:$(VERSION)-build
 
 init:
-	docker buildx rm multiarch-builder
+	docker buildx create --name mbuilder --driver docker-container --use
 	docker buildx inspect --bootstrap
-	docker buildx create --name multiarch-builder --use
-	docker buildx use multiarch-builder
 
 push:
 	docker push sangheon/sandbox:$(VERSION)
