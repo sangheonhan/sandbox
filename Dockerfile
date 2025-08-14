@@ -23,7 +23,7 @@ chsh -s /bin/zsh root && \
 usermod -l appuser ubuntu && \
 groupmod -n appgroup ubuntu && \
 usermod -d /home/appuser -m appuser && \
-chown -R appuser:appgroup /home/appuser && \
+chown -R appuser:appgroup /home/appuser /app/ && \
 passwd -d appuser && \
 usermod -c "Application" appuser && \
 chsh -s /bin/zsh appuser && \
